@@ -7,6 +7,8 @@ import os
 
 load_dotenv()
 
+debug = os.getenv('DEBUG')
+
 def analyze (ticker, tf):
     exchange = ccxt.binanceusdm()
     bars = exchange.fetch_ohlcv(ticker, timeframe = tf, limit = 500)
@@ -26,7 +28,9 @@ def analyze (ticker, tf):
     try:
         ema = df['EMA_192']
     except KeyError:
-        print('There are not enough candles to analyze in {} timeframe.'.format((tf)))
+        if debug == True:
+            print('There are not enough candles to analyze in {} timeframe.'.format((tf)))
+
         return
 
     for n in counter:
@@ -47,10 +51,11 @@ def analyze (ticker, tf):
 
     last_row = df.iloc[-2]
 
-    # print(last_row)
+    if debug == True:
+        print(last_row)
 
     if (last_row['low'] < last_row['up_rnge']) and (last_row['high'] > last_row['low_rnge']):
-        message = 'TimeFrame: {}\nOpen: ${}\nClose: ${}\nEMA 192: ${}'.format((tf), (last_row['open']), (last_row['close']), (last_row['EMA_192']))
+        message = 'TimeFrame: {}\nOpen: ${}\nClose: ${}\nEMA: ${}'.format((tf), (last_row['open']), (last_row['close']), (last_row['EMA_192']))
 
         payload = {
           'username': ('{}-PERP'.format(ticker)),
@@ -73,14 +78,15 @@ def run():
     while z < lent:
         tf = str(timeframe[z])
 
-        print(tf)
+        print('Running {} timeframe checking...'.format((tf)))
 
         c = 0
 
         while c < lens:
             ticker = (ticker_sym['symbol'][c])
 
-            print(ticker)
+            if debug == True:
+                print(ticker)
 
             analyze(ticker, tf)
 
