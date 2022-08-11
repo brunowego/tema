@@ -47,29 +47,10 @@ def analyze (ticker, tf):
 
     last_row = df.iloc[-2]
 
-    print(last_row)
-
-    isSentMessage = False
+    # print(last_row)
 
     if (last_row['low'] < last_row['up_rnge']) and (last_row['high'] > last_row['low_rnge']):
         message = 'TimeFrame: {}\nOpen: ${}\nClose: ${}\nEMA 192: ${}'.format((tf), (last_row['open']), (last_row['close']), (last_row['EMA_192']))
-
-        print(message)
-
-        payload = {
-          'username': ('{}-PERP'.format(ticker)),
-          'content': message
-        }
-
-        requests.post(os.getenv('WEBHOOK_URL'), json = payload)
-        isSentMessage = True
-
-    if (isSentMessage == False) and (
-      last_row['low'] < last_row['up_rnge']) and (last_row['high'] > last_row['low_rnge']
-    ):
-        message = 'TimeFrame: {}\nOpen: ${}\nClose: ${}\nEMA 192: ${}'.format((tf), (last_row['open']), (last_row['close']), (last_row['EMA_192']))
-
-        print(message)
 
         payload = {
           'username': ('{}-PERP'.format(ticker)),
