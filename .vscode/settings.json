@@ -1,0 +1,13 @@
+{
+  "python.languageServer": "Pylance",
+  "cSpell.words": [
+    "binanceusdm",
+    "ccxt",
+    "dotenv",
+    "lowlimit",
+    "ohlcv",
+    "perp",
+    "timeframe",
+    "uplimit"
+  ]
+}
